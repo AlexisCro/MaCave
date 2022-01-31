@@ -180,6 +180,27 @@ td>a{
 	color : black;
 }
 
+/*Gestion de la filterbox*/
+.filter{
+	border:none;
+	background: none;
+	color: white;
+	font-family: times new roman;
+	font-size: 15px;
+}
+
+.filter:hover{
+	cursor:pointer;
+}
+
+.open-filter,
+.close-filter{
+	text-decoration:none;
+	color:white;
+}
+
+/*Animation*/
+
 @keyframes SlideToTop{
 	from{
 		transform:translateY(-10%);
