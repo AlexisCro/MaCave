@@ -1,0 +1,217 @@
+body{
+    background-image: url("https://c.wallhere.com/photos/98/26/wood_barrels-140487.jpg!d");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#menu{
+    width:100%;
+    height: 10%;
+    background-color: #8a3b41;
+    color: white;
+    display:flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content:space-around;
+}
+
+.gestioncave{
+    font-family: 'Lucida Caligraphy', 'Monotype Corsiva';
+    font-size : 45px;
+    transform: rotate(-4deg);
+    margin:1px;
+    text-decoration:underline;
+}
+
+/*gestion des onglets*/
+#contener{
+    position:relative;
+    margin-top:5%;
+    left:50%;
+    transform: translateX(-50%);
+    width:900px;
+    height:400px;
+    background:#f1f1f1;
+    border-radius:5px;
+    box-shadow: 5px 5px 10px 5px lightgrey;
+	z-index: 1;
+}
+
+#contener-onglets{
+	background:#f1f1f1;
+	width:100%;
+	height: 30%;
+	display:flex;
+	border-bottom: 1px solid rgb(119, 15, 15);
+}
+
+#contener-contenu{
+	position:absolute;
+	top:31%;
+	height:69%;
+	width:100%;
+	overflow:auto;
+}
+
+.onglets{
+	width: 300px;
+	display:flex;
+	justify-content:center;
+	align-items: center;
+	font-size: 22px;
+	font-weight: 700;
+	cursor:pointer;
+}
+
+.onglets:not(:nth-child(3)){
+	border-right: 1px solid;
+}
+
+.contenu{
+	position:absolute;
+	height: 70%;
+	width: 100%;
+	opacity:0;
+}
+
+.contenu p{
+	padding: 10px;
+}
+
+.actif{
+	background: #8a3b41;
+	color: #f1f1f1;
+	transition: all 0.3s ease-in;
+}
+
+.activeContenu{
+	animation: fade 0.5s forwards;
+	z-index : 3;
+	
+}
+
+
+/*Gestion CSS pour la fenêtre MODAL*/
+#menu>a{
+	color:white;
+	text-decoration: none;
+}
+
+.modal{	
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.8);
+	z-index: 2;
+	animation: fade .4s ease-in both;
+}
+
+.modal-wrapper{
+	overflow: auto;
+	width:600px;
+	max-width:calc(100vw - 20px);
+	max-height:calc(100vh - 20px);
+	margin:10px;
+	padding:20px;
+	background-color: #e5ecf5;
+	color:black;
+	border-radius: 10px;
+	text-align:center;
+	animation: SlideToTop .5s ease-in both;
+}
+
+.modal-wrapper>h1{
+	font-size: 30px;
+	text-decoration: underline;
+	color: #8a3b41;
+}
+
+.modal[aria-hidden="true"] .modal-wrapper{
+	animation: SlideToBottom .4s ease-in both;
+}
+
+.modal[aria-hidden="true"]{
+	animation: FadeOut .4s ease-in both;
+}
+
+*:focus{
+	box-shadow: 0px 0px 10px #8a3b41;;
+}
+
+/*CSS pour gestions des tableaux */
+.miseenpagetableau{
+	display:flex;
+	align-items: start;
+	justify-content: space-around;
+	margin-left: 0px;
+	margin-right:0px;
+}
+
+table{
+	border-collapse: collapse;
+	margin-top:-1px;
+	width:100%;
+}
+
+th,
+td{
+	border-style: solid;
+	border-width: 2px;
+	border-top: none;
+	border-color: #8a3b41;
+}
+
+th{
+	font-size : 20px;
+}
+
+td{
+	text-align :center;
+	font-size :17px; 
+}
+
+td>a{
+	text-decoration: none; 
+	color : black;
+}
+
+@keyframes SlideToTop{
+	from{
+		transform:translateY(-10%);
+	}
+	to{
+		transform:translateY(0%);
+	}
+}
+
+@keyframes FadeOut{
+	From{
+		opacity:1;
+	}
+	to{
+		opacity:0;
+	}
+}
+
+@keyframes SlideToBottom{
+	From{
+		transform:translateY(0%);
+	}
+	to{
+		transform:translateY(20%);
+	}
+}
+
+@keyframes fade{
+	from{
+		opacity:0;
+		}
+	to{
+		opacity:1;
+		}
+}
