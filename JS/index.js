@@ -30,7 +30,13 @@ onglets.forEach(onglet =>{
     })
 })
 
+//Gestion apparition filtres
+let filterbutton = document.querySelector('.filter');
+let filterbox    = document.querySelector('.filterbox');
 
+filterbutton.addEventListener('click',()=>{
+    filterbox.classList.toggle('filtervisibility');
+})
 
 //Lors d'un ajout de vin 
 //Déclaration des variables 
