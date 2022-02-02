@@ -127,7 +127,7 @@ indextable = 0;
             let listHtmlFilterCepage = document.querySelector('#filtercepage');
             let tablelistcepage = listcepage.split(',');
             tablelistcepage.forEach(function(element){
-                listHtmlFilterCepage.insertAdjacentHTML('beforeend', '<input type="checkbox" id="'+element+'"><label for="'+element+'">'+element.toLowerCase()+'</label><br/>');
+                listHtmlFilterCepage.insertAdjacentHTML('beforeend', '<input type="checkbox" id="'+element+'" value="'+element+'"><label for="'+element+'">'+element.toLowerCase()+'</label><br/>');
             })
             
     }
@@ -574,7 +574,24 @@ openModal.forEach(a =>{
 //Gestion recherche de via filtre
 let filtervalidbutton = document.querySelector('.filtervalid');
 filtervalidbutton.addEventListener('click', ()=>{
-    console.log("j'ai cliqué sur le bouton");
+    let cavevin = JSON.parse(localStorage.getItem('vin'));
+    let nomvin          = cavevin[0];
+    let typevin         = cavevin[1];
+    let cepagevin       = cavevin[2];
+    let anneevin        = cavevin[3];
+    let nbrbouteillevin = cavevin[4];
+    let accordvin       = cavevin[5];
+    let comvin          = cavevin[6];
+    let i = 0;
+    cepagevin.forEach(function(element){
+        let checkfilter = document.querySelector("#"+element.toUpperCase());
+        if(cepagevin[i].toUpperCase() == checkfilter.value && checkfilter.checked == true){
+            console.log(nomvin[i]);
+        }
+        i++;
+    })
+    //console.log(tablevalcepage);
+    //Si coché alors .checked=true
 })
 
  
