@@ -127,7 +127,7 @@ indextable = 0;
             let listHtmlFilterCepage = document.querySelector('#filtercepage');
             let tablelistcepage = listcepage.split(',');
             tablelistcepage.forEach(function(element){
-                listHtmlFilterCepage.insertAdjacentHTML('beforeend', '<input type="checkbox">'+element.toLowerCase()+'</input><br/>');
+                listHtmlFilterCepage.insertAdjacentHTML('beforeend', '<input type="checkbox" id="'+element+'"><label for="'+element+'">'+element.toLowerCase()+'</label><br/>');
             })
             
     }

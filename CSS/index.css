@@ -246,6 +246,11 @@ td>a{
 	margin-bottom:10px;
 }
 
+.filtervalid>a{
+	color:white;
+	text-decoration:none;
+}
+
 /*Animation*/
 
 @keyframes SlideToTop{
