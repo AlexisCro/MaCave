@@ -74,6 +74,8 @@ indextable = 0;
         comvin          = cavevin[6];
         tablecavevin    = document.querySelector('#cavevin');
         tablecaveall    = document.querySelector('#caveall');
+        
+        let listcepage;
 
             nomvin.forEach(function(element){
                 tablecavevin.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td><a href=#'+element.replaceAll(" ", "_")+i+' class="openModal">'+element+'</a></td>'
@@ -101,9 +103,27 @@ indextable = 0;
                 +'<td>'+comvin[indextable]+'</td>');
 
                 tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td>'+element+'</td>'+'<td>'+typevin[indextable]+'</td><td>'+anneevin[indextable]+'</td><td>'+cepagevin[indextable]+'</td><td></td><td>'+nbrbouteillevin[indextable]+'</td><td>'+accordvin[indextable]+'</td><td>'+comvin[indextable]+'</td>');
+                
+                //Gestion des cépages en fonction des bouteilles utilisateur
+                let filtercepagevalue = cepagevin[indextable].toUpperCase();
+                
+                if(filtercepagevalue !== null){
+                    if(listcepage == null){
+                        listcepage = filtercepagevalue;
+                        
+                    }else{
+                        if(listcepage.indexOf(filtercepagevalue)== -1){
+                        listcepage = listcepage + ", " + filtercepagevalue;
+                        }else{
+                            listcepage = listcepage;
+                        }
+                    }
+                }
+                
                 i++;
                 indextable++;
             })
+    console.log(listcepage);
     }
 
 //Ajout d'un vin
