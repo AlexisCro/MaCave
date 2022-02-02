@@ -113,7 +113,7 @@ indextable = 0;
                         
                     }else{
                         if(listcepage.indexOf(filtercepagevalue)== -1){
-                        listcepage = listcepage + ", " + filtercepagevalue;
+                        listcepage = listcepage + "," + filtercepagevalue;
                         }else{
                             listcepage = listcepage;
                         }
@@ -123,7 +123,13 @@ indextable = 0;
                 i++;
                 indextable++;
             })
-    console.log(listcepage);
+
+            let listHtmlFilterCepage = document.querySelector('#filtercepage');
+            let tablelistcepage = listcepage.split(',');
+            tablelistcepage.forEach(function(element){
+                listHtmlFilterCepage.insertAdjacentHTML('beforeend', '<input type="checkbox">'+element.toLowerCase()+'</input><br/>');
+            })
+            
     }
 
 //Ajout d'un vin
