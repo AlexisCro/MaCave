@@ -523,10 +523,8 @@ const ouvrir = function(e){
     modal.querySelector('.js-close').addEventListener('click', close);
     modal.querySelector('.modif').addEventListener('click', ()=>{
         if(modal.querySelector('h2').textContent.indexOf("bière")>0){
-            console.log('je suis dans les bières');
             modifbiere(e);
         }else{
-            console.log('je suis dans les vins');
             modifvin(e);
         }
 })
@@ -573,5 +571,10 @@ openModal.forEach(a =>{
     a.addEventListener('click', ouvrir);
 })
 
+//Gestion recherche de via filtre
+let filtervalidbutton = document.querySelector('.filtervalid');
+filtervalidbutton.addEventListener('click', ()=>{
+    console.log("j'ai cliqué sur le bouton");
+})
 
  

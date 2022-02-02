@@ -118,9 +118,17 @@
                     <input type="checkbox">Blanche</input><br/>
                     <input type="checkbox">Rouge</input><br/>
                     <br/>
-                    <button type='button' class="filtervalid">Filtrer</button>
-                    
+                    <button type='button' class="filtervalid"><a href="#filterresult" class="openModal">Filtrer</a></button>
                 </div>
+
+                <aside id='filterresult' class='modal' aria-hidden="true" role="dialog" aria-labelledby="result-filter" style="display : none;">
+                    <div class="modal-wrapper">
+                        <h1 id="result-filter">Votre recherche</h1>
+                    
+                        <br/>
+                        <button class='js-close'>Fermer</button>
+                    </div>
+                </aside>
 
                 <div id="contener">
                     
