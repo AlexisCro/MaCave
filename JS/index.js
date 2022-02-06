@@ -583,10 +583,14 @@ filtervalidbutton.addEventListener('click', ()=>{
     let accordvin       = cavevin[5];
     let comvin          = cavevin[6];
     let i = 0;
+    let id = 1;
+    let tablerecapfilter = document.querySelector('#recapfilter');
     cepagevin.forEach(function(element){
         let checkfilter = document.querySelector("#"+element.toUpperCase());
         if(cepagevin[i].toUpperCase() == checkfilter.value && checkfilter.checked == true){
-            console.log(nomvin[i]);
+            tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td>'+nomvin[i]+'</td><td>'+typevin[i]+'</td><td>'+cepagevin[i]+'</td><td>'
+            +anneevin[i]+'</td><td>'+nbrbouteillevin[i]+'</td><td>'+accordvin[i]+'</td><td>'+comvin[i]+'</td></tr>');
+            console.log(nomvin[i]+" "+typevin[i]+" "+anneevin[i]);
         }
         i++;
     })
