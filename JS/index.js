@@ -588,14 +588,22 @@ filtervalidbutton.addEventListener('click', ()=>{
     cepagevin.forEach(function(element){
         let checkfilter = document.querySelector("#"+element.toUpperCase());
         if(cepagevin[i].toUpperCase() == checkfilter.value && checkfilter.checked == true){
-            tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td>'+nomvin[i]+'</td><td>'+typevin[i]+'</td><td>'+cepagevin[i]+'</td><td>'
+            tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+element+i+'>'+nomvin[i]+'</td><td>'+typevin[i]+'</td><td>'+cepagevin[i]+'</td><td>'
             +anneevin[i]+'</td><td>'+nbrbouteillevin[i]+'</td><td>'+accordvin[i]+'</td><td>'+comvin[i]+'</td></tr>');
-            console.log(nomvin[i]+" "+typevin[i]+" "+anneevin[i]);
         }
         i++;
     })
-    //console.log(tablevalcepage);
     //Si coché alors .checked=true
 })
 
+//Selector pour le button dans la modal filtre
+
+let closeFilter = document.querySelector('#filterresult').lastElementChild.childNodes[13];
+
+ const reloadCloseFilter = function (e){
+    e.preventDefault;
+    window.location.reload();
+}
+
+closeFilter.addEventListener('click', reloadCloseFilter);
  
