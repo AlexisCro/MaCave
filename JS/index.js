@@ -575,25 +575,67 @@ openModal.forEach(a =>{
 let filtervalidbutton = document.querySelector('.filtervalid');
 filtervalidbutton.addEventListener('click', ()=>{
     let cavevin = JSON.parse(localStorage.getItem('vin'));
-    let nomvin          = cavevin[0];
-    let typevin         = cavevin[1];
-    let cepagevin       = cavevin[2];
-    let anneevin        = cavevin[3];
-    let nbrbouteillevin = cavevin[4];
-    let accordvin       = cavevin[5];
-    let comvin          = cavevin[6];
-    let i = 0;
-    let id = 1;
+    let nomvin           = cavevin[0];
+    let typevin          = cavevin[1];
+    let cepagevin        = cavevin[2];
+    let anneevin         = cavevin[3];
+    let nbrbouteillevin  = cavevin[4];
+    let accordvin        = cavevin[5];
+    let comvin           = cavevin[6];
     let tablerecapfilter = document.querySelector('#recapfilter');
-    cepagevin.forEach(function(element){
-        let checkfilter = document.querySelector("#"+element.toUpperCase());
-        if(cepagevin[i].toUpperCase() == checkfilter.value && checkfilter.checked == true){
-            tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+element+i+'>'+nomvin[i]+'</td><td>'+typevin[i]+'</td><td>'+cepagevin[i]+'</td><td>'
-            +anneevin[i]+'</td><td>'+nbrbouteillevin[i]+'</td><td>'+accordvin[i]+'</td><td>'+comvin[i]+'</td></tr>');
-        }
-        i++;
-    })
-    //Si coché alors .checked=true
+    let divColor         = document.querySelector('#colorvin');
+    let divColorNodes    = divColor.childNodes; 
+    let divCep           = document.querySelector('#filtercepage');
+    let divCepNodes      = divCep.childNodes;
+    let colorVinValue; 
+    let cepVinValue;
+    let ifilter          = 0;
+
+  
+
+            divColorNodes.forEach(function(element){
+                if(element.type == "checkbox"){
+                    if(element.checked == true){
+                            colorVinValue = element.value;
+                    }
+                }
+            })
+
+            divCepNodes.forEach(function(element){
+                if(element.type == "checkbox"){
+                    if(element.checked == true){
+                        cepVinValue = element.value;
+                        console.log(cepVinValue);
+                    }
+                }
+            })
+
+            nomvin.forEach(function(element){
+                console.log(cepagevin[ifilter]);
+                console.log(cepVinValue);
+                if(colorVinValue !== undefined && cepVinValue == undefined){
+                    if(typevin[ifilter].toLowerCase().replace("é", "e") == colorVinValue.toLowerCase().replace("é", "e")){
+                        tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
+                        +anneevin[ifilter]+'</td><td>'+nbrbouteillevin[ifilter]+'</td><td>'+accordvin[ifilter]+'</td><td>'+comvin[ifilter]+'</td></tr>');
+                    }
+                }else{
+                    if(colorVinValue == undefined && cepVinValue !== undefined){
+                        if(cepagevin[ifilter].toUpperCase() == cepVinValue.toUpperCase()){
+                            tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
+                            +anneevin[ifilter]+'</td><td>'+nbrbouteillevin[ifilter]+'</td><td>'+accordvin[ifilter]+'</td><td>'+comvin[ifilter]+'</td></tr>');
+                        }  
+                    }else{
+                        if(colorVinValue !== undefined && cepVinValue !== undefined){
+                            if(typevin[ifilter].toLowerCase().replace("é", "e") == colorVinValue.toLowerCase().replace("é", "e") && cepagevin[ifilter].toUpperCase() == cepVinValue.toUpperCase()){
+                                tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
+                                +anneevin[ifilter]+'</td><td>'+nbrbouteillevin[ifilter]+'</td><td>'+accordvin[ifilter]+'</td><td>'+comvin[ifilter]+'</td></tr>');
+                            }
+                        }
+                    }
+                }
+                ifilter++;
+            })
+        
 })
 
 //Selector pour le button dans la modal filtre
