@@ -258,6 +258,8 @@ indextable = 0;
         tablecavebiere    = document.querySelector('#cavebiere');
         tablecaveall      = document.querySelector('#caveall');
 
+        let listtypebeer;
+
         i          = 1;
         indextable = 0;
     
@@ -284,8 +286,31 @@ indextable = 0;
                 +'<td>'+accordbiere[indextable]+'</td>'
                 +'<td>'+combiere[indextable]+'</td>');
                 tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'nombiere'+i+'\'><td>'+element+'</td>'+'<td>'+typebiere[indextable]+'</td><td></td><td></td><td>'+paysbiere[indextable]+'</td><td>'+nbrbouteillebiere[indextable]+'</td><td>'+accordbiere[indextable]+'</td><td>'+combiere[indextable]+'</td>');
+                
+                //Gestion des types de bières en fonction des bouteilles utilisateur
+                let filtercolorbeervalue = typebiere[indextable].toUpperCase();
+                
+                if(filtercolorbeervalue !== null){
+                    if(listtypebeer == null){
+                        listtypebeer = filtercolorbeervalue;
+                        
+                    }else{
+                        if(listtypebeer.indexOf(filtercolorbeervalue)== -1){
+                        listtypebeer = listtypebeer + "," + filtercolorbeervalue;
+                        }else{
+                            listtypebeer = listtypebeer;
+                        }
+                    }
+                }
+                
                 i++;
                 indextable++;
+            })
+
+            let listHtmlFilterTypeBeer = document.querySelector('#filtercolorbeer');
+            let tablelisttypebeer = listtypebeer.split(',');
+            tablelisttypebeer.forEach(function(element){
+                listHtmlFilterTypeBeer.insertAdjacentHTML('beforeend', '<input type="checkbox" id="'+element+'" value="'+element+'"><label for="'+element+'">'+element.toLowerCase()+'</label><br/>');
             })
     }
 
@@ -638,7 +663,7 @@ filtervalidbutton.addEventListener('click', ()=>{
         
 })
 
-//Selector pour le button dans la modal filtre
+//Selecteur pour le button dans la modal filtre
 
 let closeFilter = document.querySelector('#filterresult').lastElementChild.childNodes[13];
 
