@@ -607,59 +607,102 @@ filtervalidbutton.addEventListener('click', ()=>{
     let nbrbouteillevin  = cavevin[4];
     let accordvin        = cavevin[5];
     let comvin           = cavevin[6];
-    let tablerecapfilter = document.querySelector('#recapfilter');
+    let tablerecapfilterV= document.querySelector('#recapfilterV');
     let divColor         = document.querySelector('#colorvin');
     let divColorNodes    = divColor.childNodes; 
     let divCep           = document.querySelector('#filtercepage');
     let divCepNodes      = divCep.childNodes;
     let colorVinValue; 
     let cepVinValue;
-    let ifilter          = 0;
+    let typeBeerValue;
+    let ifilter;
+
+    let cavebiere         = JSON.parse(localStorage.getItem('biere'));
+    let nombiere          = cavebiere[0];
+    let typebiere         = cavebiere[1];
+    let paysbiere         = cavebiere[2];
+    let nbrbouteillebiere = cavebiere[3];
+    let accordbiere       = cavebiere[4];
+    let combiere          = cavebiere[5];
+    let tablerecapfilterB =document.querySelector('#recapfilterB');
+    let divTypeBeer      = document.querySelector('#filtercolorbeer');
+    let divTypeBeerNodes = divTypeBeer.childNodes;
+    let ifilterB         = 0;
 
   
 
             divColorNodes.forEach(function(element){
                 if(element.type == "checkbox"){
                     if(element.checked == true){
-                            colorVinValue = element.value;
+                        colorVinValue = element.value;
                     }
                 }
             })
 
             divCepNodes.forEach(function(element){
+                
+                    if(element.type == "checkbox"){
+                        if(element.checked == true){
+                            if(cepVinValue == null || cepVinValue == undefined){
+                                cepVinValue = element.value;
+                            }else{
+                                cepVinValue = cepVinValue+ ','+element.value;
+                            }
+                        }
+                    }
+            })
+            cepVinValue = cepVinValue.split(",");
+            console.log(cepVinValue);
+
+            divTypeBeerNodes.forEach(function(element){
                 if(element.type == "checkbox"){
                     if(element.checked == true){
-                        cepVinValue = element.value;
-                        console.log(cepVinValue);
+                        typeBeerValue = element.value;
                     }
                 }
             })
-
+        
+        for(let index=0;index<=cepVinValue.length-1;index++){
+            ifilter =0;
             nomvin.forEach(function(element){
-                console.log(cepagevin[ifilter]);
-                console.log(cepVinValue);
                 if(colorVinValue !== undefined && cepVinValue == undefined){
                     if(typevin[ifilter].toLowerCase().replace("é", "e") == colorVinValue.toLowerCase().replace("é", "e")){
-                        tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
+                        tablerecapfilterV.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
                         +anneevin[ifilter]+'</td><td>'+nbrbouteillevin[ifilter]+'</td><td>'+accordvin[ifilter]+'</td><td>'+comvin[ifilter]+'</td></tr>');
                     }
                 }else{
                     if(colorVinValue == undefined && cepVinValue !== undefined){
-                        if(cepagevin[ifilter].toUpperCase() == cepVinValue.toUpperCase()){
-                            tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
+                        console.log(cepVinValue[index]);
+                        console.log(cepagevin[ifilter]);
+                        if(cepagevin[ifilter].toUpperCase() == cepVinValue[index].toUpperCase()){
+                            tablerecapfilterV.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
                             +anneevin[ifilter]+'</td><td>'+nbrbouteillevin[ifilter]+'</td><td>'+accordvin[ifilter]+'</td><td>'+comvin[ifilter]+'</td></tr>');
                         }  
                     }else{
                         if(colorVinValue !== undefined && cepVinValue !== undefined){
                             if(typevin[ifilter].toLowerCase().replace("é", "e") == colorVinValue.toLowerCase().replace("é", "e") && cepagevin[ifilter].toUpperCase() == cepVinValue.toUpperCase()){
-                                tablerecapfilter.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
+                                tablerecapfilterV.insertAdjacentHTML('beforeend', '<tr><td id='+nomvin[ifilter]+ifilter+'>'+nomvin[ifilter]+'</td><td>'+typevin[ifilter]+'</td><td>'+cepagevin[ifilter]+'</td><td>'
                                 +anneevin[ifilter]+'</td><td>'+nbrbouteillevin[ifilter]+'</td><td>'+accordvin[ifilter]+'</td><td>'+comvin[ifilter]+'</td></tr>');
                             }
                         }
                     }
                 }
-                ifilter++;
+                ifilter++;                
             })
+        }
+
+            
+
+            nombiere.forEach(function(element){
+                if(typeBeerValue !== undefined){
+                    if(typebiere[ifilterB].toUpperCase().replace("é", "e") == typeBeerValue.toUpperCase().replace("é", "e")){
+                        tablerecapfilterB.insertAdjacentHTML('beforeend', '<tr><td id='+nombiere[ifilterB]+ifilterB+'>'+nombiere[ifilterB]+'</td><td>'+typebiere[ifilterB]+'</td><td>'+paysbiere[ifilterB]+'</td><td>'
+                        +nbrbouteillebiere[ifilterB]+'</td><td>'+accordbiere[ifilterB]+'</td><td>'+combiere[ifilterB]+'</td></tr>');
+                    }
+                }
+                ifilterB++;
+            })
+
         
 })
 
