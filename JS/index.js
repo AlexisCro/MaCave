@@ -76,6 +76,7 @@ indextable = 0;
         tablecaveall    = document.querySelector('#caveall');
         
         let listcepage;
+        let listcolor;
 
             nomvin.forEach(function(element){
                 tablecavevin.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td><a href=#'+element.replaceAll(" ", "_")+i+' class="openModal">'+element+'</a></td>'
@@ -120,6 +121,19 @@ indextable = 0;
                     }
                 }
                 
+                let filtercolorvalue = typevin[indextable].toLowerCase();
+                if(filtercolorvalue !== null){
+                    if(listcolor == null){
+                        listcolor = filtercolorvalue;
+                    }else{
+                        if(listcolor.indexOf(filtercolorvalue)==-1){
+                            listcolor = listcolor + "," + filtercolorvalue;
+                        }else{
+                        listcolor = listcolor;
+                        }
+                    }
+                }
+
                 i++;
                 indextable++;
             })
@@ -128,6 +142,12 @@ indextable = 0;
             let tablelistcepage = listcepage.split(',');
             tablelistcepage.forEach(function(element){
                 listHtmlFilterCepage.insertAdjacentHTML('beforeend', '<input type="checkbox" id="'+element+'" value="'+element+'"><label for="'+element+'">'+element.toLowerCase()+'</label><br/>');
+            })
+
+            let listHtmlFilterColor = document.querySelector('#colorvin');
+            let tablelistcolor = listcolor.split(',');
+            tablelistcolor.forEach(function(element){
+                listHtmlFilterColor.insertAdjacentHTML('beforeend', '<input type="checkbox" id="'+element+'" value="'+element+'"><label for="'+element+'">'+element.toLowerCase()+'</label><br/>');
             })
             
     }
