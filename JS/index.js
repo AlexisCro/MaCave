@@ -30,7 +30,39 @@ onglets.forEach(onglet =>{
     })
 })
 
+class bottleWine{
+    constructor(nomVin, typeVin, anneeVin, cepage, nbrBouteille, accord, com){
+        this.nomVin       = nomVin;
+        this.typeVin      = typeVin;
+        this.anneeVin     = anneeVin;
+        this.cepage       = cepage;
+        this.nbrBouteille = nbrBouteille;
+        this.accord       = accord ;
+        this.com          = com;
+    }
+}
 
+let myBottleWine ={};
+let myCaveofWine =[];
+class fonction{
+    static createObjectWine(){
+        let nom          = document.querySelector('#nom-vin').value;
+        let type         = document.querySelector('#type-vin');
+        type             = type.options[type.selectedIndex].text;
+        let cepage       = document.querySelector('#cepage-vin').value;   
+        let annee        = document.querySelector('#annee-vin').value;
+        let nbrBouteille = document.querySelector('#nbrvin').value;
+        let accord       = document.querySelector('#accordvin').value;
+        let com          = document.querySelector('#com-vin').value;
+
+        myBottleWine = new bottleWine(nom, type, annee, cepage, nbrBouteille, accord, com);
+        console.log(myBottleWine);
+    }
+
+    static addWineToCave(){
+        myCaveofWine.push(myBottleWine);
+    }
+}
 
 //Lors d'un ajout de vin 
 //Déclaration des variables 
@@ -102,11 +134,13 @@ indextable = 0;
 
 //Ajout d'un vin
     ajoutvin.addEventListener('click', ()=>{
+        fonction.createObjectWine();
+        fonction.addWineToCave();
         //Je définis toutes les valeurs à récupérer
-        let nom_vin     = document.querySelector('#nom-vin').value;
+        /*let nom_vin     = document.querySelector('#nom-vin').value;
         let type_vin    = document.querySelector('#type-vin');
             type_vin    = type_vin.options[type_vin.selectedIndex].text;
-        let cepage_vin   = document.querySelector('#cepage-vin').value;   
+        let cepage_vin  = document.querySelector('#cepage-vin').value;   
         let annee_vin   = document.querySelector('#annee-vin').value;
         let nbrbout_vin = document.querySelector('#nbrvin').value;
         let accord_vin  = document.querySelector('#accordvin').value;
@@ -197,7 +231,7 @@ indextable = 0;
             }
         })
         document.querySelector('.formvin').reset();
-        window.location.reload();
+        window.location.reload();*/
     })
 
 
