@@ -44,30 +44,125 @@ class bottleWine{
 
 let myBottleWine ={};
 let myCaveofWine =[];
+let ajoutvin   = document.querySelector('#ajoutvin');
+let indexWineName;
+let recupCaveOfWine;
+let nom;
+let type;
+let cepage;
+let annee;
+let nbrBouteille;
+let accord;
+let com;
+let median;
+let indexNbrOfBottle;
 class fonction{
     static createObjectWine(){
-        let nom          = document.querySelector('#nom-vin').value;
-        let type         = document.querySelector('#type-vin');
+        nom          = document.querySelector('#nom-vin').value;
+        type         = document.querySelector('#type-vin');
         type             = type.options[type.selectedIndex].text;
-        let cepage       = document.querySelector('#cepage-vin').value;   
-        let annee        = document.querySelector('#annee-vin').value;
-        let nbrBouteille = document.querySelector('#nbrvin').value;
-        let accord       = document.querySelector('#accordvin').value;
-        let com          = document.querySelector('#com-vin').value;
+        cepage       = document.querySelector('#cepage-vin').value;   
+        annee        = document.querySelector('#annee-vin').value;
+        nbrBouteille = document.querySelector('#nbrvin').value;
+        accord       = document.querySelector('#accordvin').value;
+        com          = document.querySelector('#com-vin').value;
 
         myBottleWine = new bottleWine(nom, type, annee, cepage, nbrBouteille, accord, com);
-        console.log(myBottleWine);
     }
 
     static addWineToCave(){
         myCaveofWine.push(myBottleWine);
     }
+
+    static replaceCaractere(string){
+        string.replaceAll('[{', '');
+        string.replaceAll('}]', '');
+        string.replaceAll('é', 'e');
+        string.replaceAll('è', 'e');
+        string.replaceAll('ê', 'e');
+        string.replaceAll('à', 'a');
+        string.replaceAll('ù', 'u');
+    }
+
+    static binarySearchName(array, thingToFind, start, end){
+        median = Math.floor((start+end)/2);
+        
+        if(start>end){
+            return false;
+        }
+        
+        if(array[median].nomVin.indexOf(thingToFind)>=0){
+            indexWineName = median;
+            return true;
+        }
+
+        if(array[median].nomVin.indexOf(thingToFind) === -1 && thingToFind < array[median].nomVin){
+            return this.binarySearchName(array, thingToFind, start, median-1);
+        }else if(array[median].nomVin.indexOf(thingToFind) === -1 && thingToFind > array[median].nomVin){
+            return this.binarySearchName(array, thingToFind, median+1, end);
+        }
+    }
+
+    static binarySearchYear(array, thingToFind, start, end){
+        median = Math.floor((start+end)/2);
+        
+        if(start>end){
+            return false;
+        }
+        
+        if(array[median].anneeVin.indexOf(thingToFind)>=0){
+            return true;
+        }
+
+        if(array[median].anneeVin.indexOf(thingToFind) === -1 && thingToFind < array[median].anneeVin){
+            return this.binarySearchYear(array, thingToFind, start, median-1);
+        }else if(array[median].anneeVin.indexOf(thingToFind) === -1 && thingToFind > array[median].anneeVin){
+            return this.binarySearchYear(array, thingToFind, median+1, end);
+        }
+    }
+
+    static binarySearchCepage(array, thingToFind, start, end){
+        median = Math.floor((start+end)/2);
+        
+        if(start>end){
+            return false;
+        }
+        
+        if(array[median].cepage.indexOf(thingToFind)>=0){
+            return true;
+        }
+
+        if(array[median].cepage.indexOf(thingToFind) === -1 && thingToFind < array[median].cepage){
+            return this.binarySearchCepage(array, thingToFind, start, median-1);
+        }else if(array[median].cepage.indexOf(thingToFind) === -1 && thingToFind > array[median].cepage){
+            return this.binarySearchCepage(array, thingToFind, median+1, end);
+        }
+    }
+
+    static registerVirginTable(key, cave){
+        localStorage.setItem(key, JSON.stringify(cave));
+        window.location.reload();
+    }
+
+    static registerTableNotVirgin(cave, key){
+        cave = localStorage.getItem(key).toLocaleLowerCase().replaceAll('[{', '').replaceAll('}]', '').replaceAll('é', 'e').replaceAll('è', 'e').replaceAll('ê', 'e').replaceAll('à', 'a').replaceAll('ù', 'u').replaceAll('î', 'i');
+
+            
+        /*let researchName   = this.binarySearch(cave, bottleWine.nomVin, 0, cave.length);
+        let researchYear   = this.binarySearch(cave, bottleWine.anneeVin, 0, cave.length);
+        let researchCepage = this.binarySearch(cave, bottleWine.cepage, 0, cave.length);
+
+        if(researchName == true && researchCepage == true && researchYear == true){
+            let indexNbrOfBottle = indexWineName + 4;
+            cave.splice(indexNbrOfBottle, 1,  parseInt(cave[indexNbrOfBottle].substring(15)) + bottleWine.nbrBouteille);
+            localStorage.setItem(key, JSON.stringify(cave));
+        }*/
+
+    }
 }
 
 //Lors d'un ajout de vin 
 //Déclaration des variables 
-
-let ajoutvin   = document.querySelector('#ajoutvin');
 
 let nomvin;
 let typevin;
@@ -89,7 +184,7 @@ i     = 1;
 indextable = 0;
 
 //Si ma cave à vin n'est pas nul alors affichage au démarrage
-    if(localStorage.getItem('vin') !== null){
+   /* if(localStorage.getItem('vin') !== null){
         cavevin         = JSON.parse(localStorage.getItem('vin'));
         nomvin          = cavevin[0];
         typevin         = cavevin[1];
@@ -130,12 +225,32 @@ indextable = 0;
                 i++;
                 indextable++;
             })
-    }
+    }*/
 
 //Ajout d'un vin
     ajoutvin.addEventListener('click', ()=>{
         fonction.createObjectWine();
         fonction.addWineToCave();
+        if(localStorage.getItem('vin') === null){
+            fonction.registerVirginTable('vin', myCaveofWine);
+        }else if(localStorage.getItem('vin') !== null){
+            fonction.createObjectWine();
+            recupCaveOfWine  = localStorage.getItem('vin');
+            recupCaveOfWine  = JSON.parse(recupCaveOfWine);
+            let researchYear   = fonction.binarySearchYear(recupCaveOfWine, myBottleWine.anneeVin, 0, recupCaveOfWine.length);
+            let researchCepage = fonction.binarySearchCepage(recupCaveOfWine, myBottleWine.cepage, 0, recupCaveOfWine.length);
+            let researchName   = fonction.binarySearchName(recupCaveOfWine, myBottleWine.nomVin, 0, recupCaveOfWine.length); 
+
+            if(researchName == true && researchCepage == true && researchYear == true){
+                let numberBottleObject = parseInt(myBottleWine.nbrBouteille);
+                let numberBottleCave   = parseInt(recupCaveOfWine[indexWineName].nbrBouteille);
+                let sum = numberBottleCave + numberBottleObject;
+                recupCaveOfWine[indexWineName].nbrBouteille = sum;
+                console.log(recupCaveOfWine);
+                localStorage.setItem('vin', JSON.stringify(recupCaveOfWine));
+            }
+        }
+
         //Je définis toutes les valeurs à récupérer
         /*let nom_vin     = document.querySelector('#nom-vin').value;
         let type_vin    = document.querySelector('#type-vin');
@@ -232,7 +347,7 @@ indextable = 0;
         })
         document.querySelector('.formvin').reset();
         window.location.reload();*/
-    })
+    }) 
 
 
 //Gestion variable bières
