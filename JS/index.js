@@ -30,6 +30,7 @@ onglets.forEach(onglet =>{
     })
 })
 
+//Class object wine
 class bottleWine{
     constructor(nomVin, typeVin, anneeVin, cepageVin, nbrBouteille, accord, com){
         this.nomVin       = nomVin;
@@ -42,9 +43,11 @@ class bottleWine{
     }
 }
 
+//variable definition
 let myBottleWine ={};
 let myCaveofWine =[];
-let ajoutvin   = document.querySelector('#ajoutvin');
+let ajoutvin     = document.querySelector('#ajoutvin');
+let tablecavevin = document.querySelector('#cavevin');
 let indexWineName;
 let recupCaveOfWine;
 let nom;
@@ -56,6 +59,9 @@ let accord;
 let com;
 let median;
 let indexNbrOfBottle;
+let caveWineToShow;
+
+//Class static function 
 class fonction{
     static createObjectWine(){
         nom          = document.querySelector('#nom-vin').value.toLowerCase();
@@ -135,6 +141,35 @@ class fonction{
         localStorage.setItem(key, JSON.stringify(cave));
         window.location.reload();
     }
+
+    static showWine(cave){
+        cave = JSON.parse(localStorage.getItem('vin'));
+            for(let wine of cave){                
+                tablecavevin.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td><a href=#'+wine.nomVin+' class="openModal">'+ wine.nomVin +'</a></td>'
+                +'<aside id="'+ wine.nomVin +'" class="modal" aria-hidden="true" role="dialog" aria-labelledby="'+ wine.nomVin +'" style="display : none;">'
+                +'<div class="modal-wrapper">'
+                +'<h1 id='+wine.nomVin+'>Modification</h1>'
+                +'<h2 class="titre-bout">Ma bouteille : <br/>'+ wine.nomVin + '</h2>'
+                +'<p class="type-bout">Type : <br/>' + wine.typeVin + '</p>'
+                +'<p class="annee-bout">Année : <br/>' + wine.anneeVin + '</p>'
+                +'<p class="cepage-bout">Cépage : <br/>' + wine.cepageVin + '</p>'
+                +'<label for="nbr-bout">Nombre de bouteille : </label><br/>'
+                +'<input type="number" id="nbr-bout" value="'+ wine.nbrBouteille +'"></input><br/><br/>'
+                +'<label for="accord-bout">Accord mets/vins</label><br/>'
+                +'<input type="text" id="accord-bout" value="'+ wine.accord +'"</input><br/><br/>'
+                +'<label for="com-bout">Commentaires - Avis</label><br/><br/>'
+                +'<textarea id="com-bout" row="8" cols="30">'+ wine.com +'</textarea><br/><br/>'
+                +'<button class="modif" type="button">Enregistrer</button><br/>'
+                +'<button class="js-close" type="button">Fermer</button>'
+                +'</aside>'
+                +'<td>'+ wine.typeVin      +'</td>'
+                +'<td>'+ wine.anneeVin     +'</td>'
+                +'<td>'+ wine.cepageVin    +'</td>'
+                +'<td>'+ wine.nbrBouteille +'</td>'
+                +'<td>'+ wine.accord       +'</td>'
+                +'<td>'+ wine.com          +'</td>');
+            }
+    }
 }
 
 //Lors d'un ajout de vin 
@@ -150,7 +185,6 @@ let comvin;
 
 let cavevin;
 
-let tablecavevin;
 let tablecaveall;
 
 let i;
@@ -160,6 +194,9 @@ i     = 1;
 indextable = 0;
 
 //Si ma cave à vin n'est pas nul alors affichage au démarrage
+    if(localStorage.getItem('vin') !== null){
+        fonction.showWine(caveWineToShow);
+    }
    /* if(localStorage.getItem('vin') !== null){
         cavevin         = JSON.parse(localStorage.getItem('vin'));
         nomvin          = cavevin[0];
