@@ -48,6 +48,7 @@ let myBottleWine ={};
 let myCaveofWine =[];
 let ajoutvin     = document.querySelector('#ajoutvin');
 let tablecavevin = document.querySelector('#cavevin');
+let tablecaveall = document.querySelector('#caveall');
 let indexWineName;
 let recupCaveOfWine;
 let nom;
@@ -168,6 +169,14 @@ class fonction{
                 +'<td>'+ wine.nbrBouteille +'</td>'
                 +'<td>'+ wine.accord       +'</td>'
                 +'<td>'+ wine.com          +'</td>');
+
+                tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td>'+ wine.nomVin +'</td>'
+                +'<td>'+ wine.typeVin      +'</td>'
+                +'<td>'+ wine.anneeVin     +'</td>'
+                +'<td>'+ wine.cepageVin    +'</td><td></td>'
+                +'<td>'+ wine.nbrBouteille +'</td>'
+                +'<td>'+ wine.accord       +'</td>'
+                +'<td>'+ wine.com          +'</td>');
             }
     }
 }
@@ -185,8 +194,6 @@ let comvin;
 
 let cavevin;
 
-let tablecaveall;
-
 let i;
 let indextable;
 
@@ -197,43 +204,7 @@ indextable = 0;
     if(localStorage.getItem('vin') !== null){
         fonction.showWine(caveWineToShow);
     }
-   /* if(localStorage.getItem('vin') !== null){
-        cavevin         = JSON.parse(localStorage.getItem('vin'));
-        nomvin          = cavevin[0];
-        typevin         = cavevin[1];
-        cepagevin       = cavevin[2];
-        anneevin        = cavevin[3];
-        nbrbouteillevin = cavevin[4];
-        accordvin       = cavevin[5];
-        comvin          = cavevin[6];
-        tablecavevin    = document.querySelector('#cavevin');
-        tablecaveall    = document.querySelector('#caveall');
-
-            nomvin.forEach(function(element){
-                tablecavevin.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td><a href=#'+element.replaceAll(" ", "_")+i+' class="openModal">'+element+'</a></td>'
-                +'<aside id="'+element.replaceAll(" ", "_")+i+'" class="modal" aria-hidden="true" role="dialog" aria-labelledby="'+element+'" style="display : none;">'
-                +'<div class="modal-wrapper">'
-                +'<h1 id='+element+'>Modification</h1>'
-                +'<h2 class="titre-bout">Ma bouteille : <br/>'+ element + '</h2>'
-                +'<p class="type-bout">Type : <br/>' + typevin[indextable] + '</p>'
-                +'<p class="annee-bout">Année : <br/>' + anneevin[indextable] + '</p>'
-                +'<p class="cepage-bout">Cépage : <br/>' + cepagevin[indextable] + '</p>'
-                +'<label for="nbr-bout">Nombre de bouteille : </label><br/>'
-                +'<input type="number" id="nbr-bout" value="'+nbrbouteillevin[indextable]+'"></input><br/><br/>'
-                +'<label for="accord-bout">Accord mets/vins</label><br/>'
-                +'<input type="text" id="accord-bout" value="'+accordvin[indextable]+'"</input><br/><br/>'
-                +'<label for="com-bout">Commentaires - Avis</label><br/><br/>'
-                +'<textarea id="com-bout" row="8" cols="30">'+comvin[indextable]+'</textarea><br/><br/>'
-                +'<button class="modif" type="button">Enregistrer</button><br/>'
-                +'<button class="js-close" type="button">Fermer</button>'
-                +'</aside>'
-                +'<td>'+typevin[indextable]+'</td>'
-                +'<td>'+anneevin[indextable]+'</td>'
-                +'<td>'+cepagevin[indextable]+'</td>'
-                +'<td>'+nbrbouteillevin[indextable]+'</td>'
-                +'<td>'+accordvin[indextable]+'</td>'
-                +'<td>'+comvin[indextable]+'</td>');
-
+   /*       nomvin.forEach(function(element){
                 tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td>'+element+'</td>'+'<td>'+typevin[indextable]+'</td><td>'+anneevin[indextable]+'</td><td>'+cepagevin[indextable]+'</td><td></td><td>'+nbrbouteillevin[indextable]+'</td><td>'+accordvin[indextable]+'</td><td>'+comvin[indextable]+'</td>');
                 i++;
                 indextable++;
