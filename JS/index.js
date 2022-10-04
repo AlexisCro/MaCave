@@ -43,10 +43,26 @@ class bottleWine{
     }
 }
 
+//Class object beer
+
+class bottleBeer{
+    constructor(nomBeer, typeBeer, paysBeer, nbrBottleBeer, accordBeer, comBeer){
+        this.nomBeer       = nomBeer;
+        this.typeBeer      = typeBeer;
+        this.paysBeer      = paysBeer;
+        this.nbrBottleBeer = nbrBottleBeer;
+        this.accordBeer    = accordBeer;
+        this.comBeer       = comBeer;
+    }
+}
+
 //variable definition
 let myBottleWine ={};
 let myCaveofWine =[];
+let myBottleBeer ={};
+let myCaveOfBeer =[];
 let ajoutvin     = document.querySelector('#ajoutvin');
+let ajoutbiere   = document.querySelector('#ajoutbiere');
 let tablecavevin = document.querySelector('#cavevin');
 let tablecaveall = document.querySelector('#caveall');
 let indexWineName;
@@ -61,9 +77,16 @@ let com;
 let median;
 let indexNbrOfBottle;
 let caveWineToShow;
+let nomBeer;
+let typeBeer;
+let paysBeer;
+let nbrBottleBeer;
+let accordBeer;
+let comBeer;
+
 
 //Class static function 
-class fonction{
+class fonctionWine{
     static createObjectWine(){
         nom          = document.querySelector('#nom-vin').value.toLowerCase();
         nom          = nom.replaceAll('é', 'e').replaceAll('è', 'e').replaceAll('ê', 'e').replaceAll('à', 'a').replaceAll('î', 'i').replaceAll('ù', 'ù');
@@ -146,8 +169,8 @@ class fonction{
     static showWine(cave){
         cave = JSON.parse(localStorage.getItem('vin'));
             for(let wine of cave){                
-                tablecavevin.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td><a href=#'+wine.nomVin+' class="openModal">'+ wine.nomVin +'</a></td>'
-                +'<aside id="'+ wine.nomVin +'" class="modal" aria-hidden="true" role="dialog" aria-labelledby="'+ wine.nomVin +'" style="display : none;">'
+                tablecavevin.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td><a href=#'+wine.nomVin.replaceAll(' ', '_')+wine.anneeVin+' class="openModal">'+ wine.nomVin +'</a></td>'
+                +'<aside id="'+ wine.nomVin.replaceAll(' ', '_')+wine.anneeVin +'" class="modal" aria-hidden="true" role="dialog" aria-labelledby="'+ wine.nomVin+wine.anneeVin +'" style="display : none;">'
                 +'<div class="modal-wrapper">'
                 +'<h1 id='+wine.nomVin+'>Modification</h1>'
                 +'<h2 class="titre-bout">Ma bouteille : <br/>'+ wine.nomVin + '</h2>'
@@ -179,6 +202,55 @@ class fonction{
                 +'<td>'+ wine.com          +'</td>');
             }
     }
+
+    static modifWine(){
+        console.log('je lance ma fct de modif');
+        let name      = modal.querySelector('.titre-bout').textContent.slice(15);
+        let type      = modal.querySelector('.type-bout').textContent.slice(7);
+        let annee     = modal.querySelector('.annee-bout').textContent.slice(8);
+        let cepage    = modal.querySelector('.cepage-bout').textContent.slice(9);
+        let accord    = modal.querySelector('#accord-bout').value;
+        let nbrBottle = modal.querySelector('#nbr-bout').value;
+        let com       = modal.querySelector('#com-bout').value;
+        let recupCave = JSON.parse(localStorage.getItem('vin'));
+
+        let researchName   = fonctionWine.binarySearchName(recupCave, name, 0, recupCave.length);
+        let researchYear   = fonctionWine.binarySearchYear(recupCave, annee, 0, recupCave.length);
+        let researchCepage = fonctionWine.binarySearchCepage(recupCave, cepage, 0, recupCave.length);
+        console.log('researchName = ' + researchName);
+        console.log('researchYear = ' + researchYear);
+        console.log('annee = ' + annee);
+        console.log('anneeObject = ' + recupCave[median].anneeVin)
+        console.log('researchCepage = ' + researchCepage);
+        if(researchName == true && researchYear == true && researchCepage == true){
+            recupCave[median].nbrBouteille = nbrBottle;
+            recupCave[median].accord       = accord;
+            recupCave[median].com          = com;
+        }
+        localStorage.setItem('vin', JSON.stringify(recupCave));
+        window/location.reload();
+    }
+    
+}
+
+class fonctionBeer{
+    static createObjectBeer(){
+        nomBeer      = document.querySelector('#nom-biere').value.toLowerCase();
+        nomBeer      = nomBeer.replaceAll('é', 'e').replaceAll('è', 'e').replaceAll('ê', 'e').replaceAll('à', 'a').replaceAll('î', 'i').replaceAll('ù', 'ù');
+        typeBeer     = document.querySelector('#type-biere');
+        typeBeer     = typeBeer.options[type.selectedIndex].text;
+        paysBeer     = document.querySelector('#pays-biere').value.toLowerCase(); 
+        paysBeer     = paysBeer.replaceAll('é', 'e').replaceAll('è', 'e').replaceAll('ê', 'e').replaceAll('à', 'a').replaceAll('î', 'i').replaceAll('ù', 'ù');
+        nbrBottleBeer= document.querySelector('#nbrbiere').value;
+        accordBeer   = document.querySelector('#accordbiere').value;
+        comBeer      = document.querySelector('#com-biere').value;
+
+        myBottleBeer = new bottleBeer(nomBeer, typeBeer, paysBeer, nbrBottleBeer, accordBeer, comBeer);
+    }
+
+    static addBeerToCave(array){
+        array.push(myBottleBeer);
+    }
 }
 
 //Lors d'un ajout de vin 
@@ -202,28 +274,22 @@ indextable = 0;
 
 //Si ma cave à vin n'est pas nul alors affichage au démarrage
     if(localStorage.getItem('vin') !== null){
-        fonction.showWine(caveWineToShow);
+        fonctionWine.showWine(caveWineToShow);
     }
-   /*       nomvin.forEach(function(element){
-                tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'domainevin'+i+'\'><td>'+element+'</td>'+'<td>'+typevin[indextable]+'</td><td>'+anneevin[indextable]+'</td><td>'+cepagevin[indextable]+'</td><td></td><td>'+nbrbouteillevin[indextable]+'</td><td>'+accordvin[indextable]+'</td><td>'+comvin[indextable]+'</td>');
-                i++;
-                indextable++;
-            })
-    }*/
 
 //Ajout d'un vin
     ajoutvin.addEventListener('click', ()=>{
-        fonction.createObjectWine();
-        fonction.addWineToCave(myCaveofWine);
+        fonctionWine.createObjectWine();
+        fonctionWine.addWineToCave(myCaveofWine);
         if(localStorage.getItem('vin') === null){
-            fonction.registerTable('vin', myCaveofWine);
+            fonctionWine.registerTable('vin', myCaveofWine);
         }else if(localStorage.getItem('vin') !== null){
-            fonction.createObjectWine();
+            fonctionWine.createObjectWine();
             recupCaveOfWine  = localStorage.getItem('vin');
             recupCaveOfWine  = JSON.parse(recupCaveOfWine);
-            let researchYear   = fonction.binarySearchYear(recupCaveOfWine, myBottleWine.anneeVin, 0, recupCaveOfWine.length);
-            let researchCepage = fonction.binarySearchCepage(recupCaveOfWine, myBottleWine.cepageVin, 0, recupCaveOfWine.length);
-            let researchName   = fonction.binarySearchName(recupCaveOfWine, myBottleWine.nomVin, 0, recupCaveOfWine.length); 
+            let researchYear   = fonctionWine.binarySearchYear(recupCaveOfWine, myBottleWine.anneeVin, 0, recupCaveOfWine.length);
+            let researchCepage = fonctionWine.binarySearchCepage(recupCaveOfWine, myBottleWine.cepageVin, 0, recupCaveOfWine.length);
+            let researchName   = fonctionWine.binarySearchName(recupCaveOfWine, myBottleWine.nomVin, 0, recupCaveOfWine.length); 
 
             if(researchName == true && researchCepage == true && researchYear == true){
                 let numberBottleObject = parseInt(myBottleWine.nbrBouteille);
@@ -233,9 +299,9 @@ indextable = 0;
                 localStorage.setItem('vin', JSON.stringify(recupCaveOfWine));
                 window.location.reload();
             }else if(researchName == false || researchCepage == false || researchYear == false){
-                fonction.createObjectWine();
-                fonction.addWineToCave(recupCaveOfWine);
-                fonction.registerTable('vin', recupCaveOfWine);
+                fonctionWine.createObjectWine();
+                fonctionWine.addWineToCave(recupCaveOfWine);
+                fonctionWine.registerTable('vin', recupCaveOfWine);
             }
         }
         document.querySelector('.formvin').reset();
@@ -243,7 +309,7 @@ indextable = 0;
 
 
 //Gestion variable bières
-    let ajoutbiere = document.querySelector('#ajoutbiere');
+
 
     let nombiere;
     let typebiere;
@@ -393,69 +459,7 @@ ajoutbiere.addEventListener('click', ()=>{
     window.location.reload();
 })
 
-//Modifications des données bouteilles 
-const modifvin = function(e){
-    let name_vin   = modal.querySelector('.titre-bout').textContent.slice(15);
-    let type_vin   = modal.querySelector('.type-bout').textContent.slice(7);
-    let annee_vin  = modal.querySelector('.annee-bout').textContent.slice(8);
-    let cepage_vin = modal.querySelector('.cepage-bout').textContent.slice(9);
 
-    let accord_vin = modal.querySelector('#accord-bout').value;
-    let nbr_bout   = modal.querySelector('#nbr-bout').value;
-    let com_vin    = modal.querySelector('#com-bout').value;
-
-    boisson         = JSON.parse(localStorage.getItem('vin'));
-    nomvin          = boisson[0];
-    typevin         = boisson[1];
-    cepagevin       = boisson[2];
-    anneevin        = boisson[3];
-    nbrbouteillevin = boisson[4];
-    accordvin       = boisson[5];
-    comvin          = boisson[6];
-
-    for(let m=0; m<=nomvin.length; m++){
-        if(nomvin[m] === name_vin && typevin[m] === type_vin && anneevin[m] == annee_vin && cepagevin[m] === cepage_vin){
-            nbrbouteillevin.splice(m, 1, nbr_bout);
-            accordvin.splice(m, 1, accord_vin);
-            comvin.splice(m, 1, com_vin);
-            if(nbrbouteillevin[m] == 0){
-                    nomvin.push(nomvin[m]);
-                    typevin.push(typevin[m]);
-                    nbrbouteillevin.push(nbrbouteillevin[m]);
-                    accordvin.push(accordvin[m]);
-                    comvin.push(comvin[m]);
-                    cepagevin.push(cepagevin[m]);
-                    anneevin.push(anneevin[m]);
-                    nomvin.splice(m, 1);
-                    typevin.splice(m, 1);
-                    nbrbouteillevin.splice(m, 1);
-                    accordvin.splice(m, 1);
-                    comvin.splice(m, 1);
-                    cepagevin.splice(m, 1);
-                    anneevin.splice(m, 1);
-                }else if(nbrbouteillevin[m]>0){
-                    nomvin.unshift(nomvin[m]);
-                    typevin.unshift(typevin[m]);
-                    nbrbouteillevin.unshift(nbrbouteillevin[m]);
-                    accordvin.unshift(accordvin[m]);
-                    comvin.unshift(comvin[m]);
-                    cepagevin.unshift(cepagevin[m]);
-                    anneevin.unshift(anneevin[m]);
-                    nomvin.splice(m+1, 1);
-                    typevin.splice(m+1, 1);
-                    nbrbouteillevin.splice(m+1, 1);
-                    accordvin.splice(m+1, 1);
-                    comvin.splice(m+1, 1);
-                    cepagevin.splice(m+1, 1);
-                    anneevin.splice(m+1, 1);
-                }
-            localStorage.setItem('vin', JSON.stringify(boisson));
-            window.location.reload();
-            return;
-            
-        }
-    }
-}
 
 const modifbiere = function(e){
     let name_biere   = modal.querySelector('.titre-biere').textContent.slice(11);
@@ -536,7 +540,7 @@ const ouvrir = function(e){
             modifbiere(e);
         }else{
             console.log('je suis dans les vins');
-            modifvin(e);
+            fonctionWine.modifWine();
         }
 })
 }
