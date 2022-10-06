@@ -83,6 +83,7 @@ let paysBeer;
 let nbrBottleBeer;
 let accordBeer;
 let comBeer;
+let i;
 
 
 //Class static function 
@@ -106,58 +107,25 @@ class fonctionWine{
         array.push(myBottleWine);
     }
 
-    static binarySearchName(array, thingToFind, start, end){
-        median = Math.floor((start+end)/2);
-        
-        if(start>end || array[median] == undefined ||  array[median].nomVin == undefined){
-            return false;
-        }
-
-        if(array[median].nomVin.indexOf(thingToFind)>=0){
-            indexWineName = median;
-            return true;
-        }
-
-        if(array[median].nomVin.indexOf(thingToFind) === -1 && thingToFind < array[median].nomVin){
-            return this.binarySearchName(array, thingToFind, start, median-1);
-        }else if(array[median].nomVin.indexOf(thingToFind) === -1 && thingToFind > array[median].nomVin){
-            return this.binarySearchName(array, thingToFind, median+1, end);
-        }
+    static sortChronoYear(a, b){
+        return a.anneeVin - b.anneeVin;
     }
 
-    static binarySearchYear(array, thingToFind, start, end){
-        median = Math.floor((start+end)/2);
-        
-        if(start>end || array[median] == undefined ||  array[median].anneeVin == undefined){
-            return false;
-        }
-
-        if(array[median].anneeVin.indexOf(thingToFind)>=0){
-            return true;
-        }
-
-        if(array[median].anneeVin.indexOf(thingToFind) === -1 && thingToFind < array[median].anneeVin){
-            return this.binarySearchYear(array, thingToFind, start, median-1);
-        }else if(array[median].anneeVin.indexOf(thingToFind) === -1 && thingToFind > array[median].anneeVin){
-            return this.binarySearchYear(array, thingToFind, median+1, end);
-        }
+    static sortChronoName(a, b){
+        return a.nomVin - b.nomVin;
     }
 
-    static binarySearchCepage(array, thingToFind, start, end){
-        median = Math.floor((start+end)/2);
-        
-        if(start>end || array[median] == undefined || array[median].cepageVin == undefined){
-            return false;
-        }
+    static sortChronoCepage(a, b){
+        return a.cepageVin - b.cepageVin;
+    }
 
-        if(array[median].cepageVin.indexOf(thingToFind)>=0){
-            return true;
-        }
-
-        if(array[median].cepageVin.indexOf(thingToFind) === -1 && thingToFind < array[median].cepageVin){
-            return this.binarySearchCepage(array, thingToFind, start, median-1);
-        }else if(array[median].cepageVin.indexOf(thingToFind) === -1 && thingToFind > array[median].cepageVin){
-            return this.binarySearchCepage(array, thingToFind, median+1, end);
+    static researchWine(array, nameToFind, yearToFind, cepageToFind){
+        i = 0;
+        while(i<=array.length){
+            if(array[i].nomVin == nameToFind && array[i].anneeVin == yearToFind && array[i].cepageVin == cepageToFind){
+                return i;
+            }
+            i++;
         }
     }
 
@@ -204,31 +172,22 @@ class fonctionWine{
     }
 
     static modifWine(){
-        console.log('je lance ma fct de modif');
         let name      = modal.querySelector('.titre-bout').textContent.slice(15);
-        let type      = modal.querySelector('.type-bout').textContent.slice(7);
         let annee     = modal.querySelector('.annee-bout').textContent.slice(8);
         let cepage    = modal.querySelector('.cepage-bout').textContent.slice(9);
         let accord    = modal.querySelector('#accord-bout').value;
         let nbrBottle = modal.querySelector('#nbr-bout').value;
         let com       = modal.querySelector('#com-bout').value;
         let recupCave = JSON.parse(localStorage.getItem('vin'));
+            recupCave = recupCave.sort(fonctionWine.sortChronoName);
 
-        let researchName   = fonctionWine.binarySearchName(recupCave, name, 0, recupCave.length);
-        let researchYear   = fonctionWine.binarySearchYear(recupCave, annee, 0, recupCave.length);
-        let researchCepage = fonctionWine.binarySearchCepage(recupCave, cepage, 0, recupCave.length);
-        console.log('researchName = ' + researchName);
-        console.log('researchYear = ' + researchYear);
-        console.log('annee = ' + annee);
-        console.log('anneeObject = ' + recupCave[median].anneeVin)
-        console.log('researchCepage = ' + researchCepage);
-        if(researchName == true && researchYear == true && researchCepage == true){
-            recupCave[median].nbrBouteille = nbrBottle;
-            recupCave[median].accord       = accord;
-            recupCave[median].com          = com;
-        }
+        fonctionWine.researchWine(recupCave, name, annee, cepage);
+            recupCave[i].nbrBouteille = nbrBottle;
+            recupCave[i].accord       = accord;
+            recupCave[i].com          = com;
+
         localStorage.setItem('vin', JSON.stringify(recupCave));
-        window/location.reload();
+        window.location.reload();
     }
     
 }
@@ -266,7 +225,6 @@ let comvin;
 
 let cavevin;
 
-let i;
 let indextable;
 
 i     = 1;
