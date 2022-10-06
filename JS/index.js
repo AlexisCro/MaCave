@@ -83,7 +83,8 @@ let paysBeer;
 let nbrBottleBeer;
 let accordBeer;
 let comBeer;
-let i;
+let i = 0;
+let result;
 
 
 //Class static function 
@@ -107,24 +108,21 @@ class fonctionWine{
         array.push(myBottleWine);
     }
 
-    static sortChronoYear(a, b){
-        return a.anneeVin - b.anneeVin;
-    }
-
     static sortChronoName(a, b){
         return a.nomVin - b.nomVin;
     }
 
-    static sortChronoCepage(a, b){
-        return a.cepageVin - b.cepageVin;
-    }
 
     static researchWine(array, nameToFind, yearToFind, cepageToFind){
         i = 0;
         while(i<=array.length){
-            if(array[i].nomVin == nameToFind && array[i].anneeVin == yearToFind && array[i].cepageVin == cepageToFind){
+            if(i == array.length){
+                result = false;
+                return result;
+            }else if(array[i].nomVin == nameToFind && array[i].anneeVin == yearToFind && array[i].cepageVin == cepageToFind){
+                result = true;
                 return i;
-            }
+            } 
             i++;
         }
     }
@@ -178,15 +176,14 @@ class fonctionWine{
         let accord    = modal.querySelector('#accord-bout').value;
         let nbrBottle = modal.querySelector('#nbr-bout').value;
         let com       = modal.querySelector('#com-bout').value;
-        let recupCave = JSON.parse(localStorage.getItem('vin'));
-            recupCave = recupCave.sort(fonctionWine.sortChronoName);
+        myCaveofWine = JSON.parse(localStorage.getItem('vin'));
+        myCaveofWine = myCaveofWine.sort(fonctionWine.sortChronoName);
+        fonctionWine.researchWine(myCaveofWine, name, annee, cepage);
+            myCaveofWine[i].nbrBouteille = nbrBottle;
+            myCaveofWine[i].accord       = accord;
+            myCaveofWine[i].com          = com;
 
-        fonctionWine.researchWine(recupCave, name, annee, cepage);
-            recupCave[i].nbrBouteille = nbrBottle;
-            recupCave[i].accord       = accord;
-            recupCave[i].com          = com;
-
-        localStorage.setItem('vin', JSON.stringify(recupCave));
+        localStorage.setItem('vin', JSON.stringify(myCaveofWine));
         window.location.reload();
     }
     
@@ -210,6 +207,35 @@ class fonctionBeer{
     static addBeerToCave(array){
         array.push(myBottleBeer);
     }
+
+    static showBeer(cave){
+        cave = JSON.parse(localStorage.getItem('beer'));
+            for(let beer of cave){
+                tablecavebiere.insertAdjacentHTML('beforeend', '<tr  class=\'nombiere'+i+'\'><td><a href="#'+beer.nomBeer.replaceAll(" ", "_")+beer.typeBeer+'" class="openModal">'+beer.nomBeer+'</a></td>'
+                +'<aside id="'+beer.nomBeer.replaceAll(" ", "_")+beer.typeBeer+'" class="modal" aria-hidden="true" role="dialog" aria-labelledby="'+beer.nomBeer+'" style="display : none;">'
+                +'<div class="modal-wrapper">'
+                +'<h1 id="'+beer.nomBeer+'">Modification</h1>'
+                +'<h2 class="titre-biere">Ma bière : <br/>'+beer.nomBeer+'</h2>'
+                +'<p class="type-biere">Type : <br/>'+beer.typeBeer+'</p>'
+                +'<p class="pays-biere">Pays : <br/>'+beer.paysBeer+'</p>'
+                +'<label for="nbr-biere">Nombre de bouteilles</label><br/>'
+                +'<input type="number" id="nbr-biere" value="'+beer.nbrBottleBeer+'"></input><br/>'
+                +'<label for="accord-biere">Accord mets/bière</label><br/>'
+                +'<input type="text" id="accord-biere" value="'+beer.accordBeer+'"></input><br/>'
+                +'<label for="com-biere">Commentaires - avis</label><br/>'
+                +'<textarea id="com-biere" row="8" cols="30">'+beer.comBeer+'</textarea><br/>'
+                +'<button type="button" class="modif">Enregistrer</button><br/><br/>'
+                +'<button type="button" class="js-close">Fermer</button>'
+                +'</aside>'
+                +'<td>'+beer.typeBeer+'</td>'
+                +'<td>'+beer.paysBeer+'</td>'
+                +'<td>'+beer.nbrBottleBeer+'</td>'
+                +'<td>'+beer.accordBeer+'</td>'
+                +'<td>'+beer.comBeer+'</td>');
+                tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'nombiere'+i+'\'><td>'+beer.nomBeer+'</td>'+'<td>'+beer.typeBeer+'</td><td></td><td></td><td>'+beer.paysBeer+'</td><td>'+beer.nbrBottleBeer+'</td><td>'+beer.accordBeer+'</td><td>'+beer.comBeer+'</td>');
+                
+            }
+    }
 }
 
 //Lors d'un ajout de vin 
@@ -227,7 +253,7 @@ let cavevin;
 
 let indextable;
 
-i     = 1;
+//i     = 1;
 indextable = 0;
 
 //Si ma cave à vin n'est pas nul alors affichage au démarrage
@@ -237,29 +263,32 @@ indextable = 0;
 
 //Ajout d'un vin
     ajoutvin.addEventListener('click', ()=>{
+        if(localStorage.getItem('vin') === null){
         fonctionWine.createObjectWine();
         fonctionWine.addWineToCave(myCaveofWine);
-        if(localStorage.getItem('vin') === null){
-            fonctionWine.registerTable('vin', myCaveofWine);
+        fonctionWine.registerTable('vin', myCaveofWine);            
         }else if(localStorage.getItem('vin') !== null){
             fonctionWine.createObjectWine();
-            recupCaveOfWine  = localStorage.getItem('vin');
-            recupCaveOfWine  = JSON.parse(recupCaveOfWine);
-            let researchYear   = fonctionWine.binarySearchYear(recupCaveOfWine, myBottleWine.anneeVin, 0, recupCaveOfWine.length);
-            let researchCepage = fonctionWine.binarySearchCepage(recupCaveOfWine, myBottleWine.cepageVin, 0, recupCaveOfWine.length);
-            let researchName   = fonctionWine.binarySearchName(recupCaveOfWine, myBottleWine.nomVin, 0, recupCaveOfWine.length); 
-
-            if(researchName == true && researchCepage == true && researchYear == true){
+            myCaveofWine  = localStorage.getItem('vin');
+            myCaveofWine  = JSON.parse(myCaveofWine);
+            myCaveofWine  = myCaveofWine.sort(fonctionWine.sortChronoName);
+            let nameWine   = modal.querySelector('#nom-vin').value.toLowerCase();
+                nameWine   = nameWine.replaceAll('é', 'e').replaceAll('è', 'e').replaceAll('ê', 'e').replaceAll('à', 'a').replaceAll('î', 'i').replaceAll('ù', 'ù');
+            let anneeWine  = modal.querySelector('#annee-vin').value;
+            let cepageWine = modal.querySelector('#cepage-vin').value.toLowerCase();
+                cepageWine = cepageWine.replaceAll('é', 'e').replaceAll('è', 'e').replaceAll('ê', 'e').replaceAll('à', 'a').replaceAll('î', 'i').replaceAll('ù', 'ù');
+            fonctionWine.researchWine(myCaveofWine, nameWine, anneeWine, cepageWine);
+            if(result == true){
                 let numberBottleObject = parseInt(myBottleWine.nbrBouteille);
-                let numberBottleCave   = parseInt(recupCaveOfWine[indexWineName].nbrBouteille);
+                let numberBottleCave   = parseInt(myCaveofWine[i].nbrBouteille);
                 let sum = numberBottleCave + numberBottleObject;
-                recupCaveOfWine[indexWineName].nbrBouteille = sum;
-                localStorage.setItem('vin', JSON.stringify(recupCaveOfWine));
+                myCaveofWine[i].nbrBouteille = sum;
+                localStorage.setItem('vin', JSON.stringify(myCaveofWine));
                 window.location.reload();
-            }else if(researchName == false || researchCepage == false || researchYear == false){
+            }else if(result == false){
                 fonctionWine.createObjectWine();
-                fonctionWine.addWineToCave(recupCaveOfWine);
-                fonctionWine.registerTable('vin', recupCaveOfWine);
+                fonctionWine.addWineToCave(myCaveofWine);
+                fonctionWine.registerTable('vin', myCaveofWine);
             }
         }
         document.querySelector('.formvin').reset();
@@ -281,46 +310,9 @@ indextable = 0;
 
 //Si ma cave à bière est différent de nul alors affichage au démarrage
     if(localStorage.getItem('biere') !==null){
-        cavebiere         = JSON.parse(localStorage.getItem('biere'));
-        nombiere          = cavebiere[0];
-        typebiere         = cavebiere[1];
-        paysbiere         = cavebiere[2];
-        nbrbouteillebiere = cavebiere[3];
-        accordbiere       = cavebiere[4];
-        combiere          = cavebiere[5];
-        tablecavebiere    = document.querySelector('#cavebiere');
-        tablecaveall      = document.querySelector('#caveall');
-
-        i          = 1;
-        indextable = 0;
-    
-            nombiere.forEach(function(element){
-                tablecavebiere.insertAdjacentHTML('beforeend', '<tr  class=\'nombiere'+i+'\'><td><a href="#'+element.replaceAll(" ", "_")+i+'" class="openModal">'+element+'</a></td>'
-                +'<aside id="'+element.replaceAll(" ", "_")+i+'" class="modal" aria-hidden="true" role="dialog" aria-labelledby="'+element+'" style="display : none;">'
-                +'<div class="modal-wrapper">'
-                +'<h1 id="'+element+'">Modification</h1>'
-                +'<h2 class="titre-biere">Ma bière : <br/>'+element+'</h2>'
-                +'<p class="type-biere">Type : <br/>'+typebiere[indextable]+'</p>'
-                +'<p class="pays-biere">Pays : <br/>'+paysbiere[indextable]+'</p>'
-                +'<label for="nbr-biere">Nombre de bouteilles</label><br/>'
-                +'<input type="number" id="nbr-biere" value="'+nbrbouteillebiere[indextable]+'"></input><br/>'
-                +'<label for="accord-biere">Accord mets/bière</label><br/>'
-                +'<input type="text" id="accord-biere" value="'+accordbiere[indextable]+'"></input><br/>'
-                +'<label for="com-biere">Commentaires - avis</label><br/>'
-                +'<textarea id="com-biere" row="8" cols="30">'+combiere[indextable]+'</textarea><br/>'
-                +'<button type="button" class="modif">Enregistrer</button><br/><br/>'
-                +'<button type="button" class="js-close">Fermer</button>'
-                +'</aside>'
-                +'<td>'+typebiere[indextable]+'</td>'
-                +'<td>'+paysbiere[indextable]+'</td>'
-                +'<td>'+nbrbouteillebiere[indextable]+'</td>'
-                +'<td>'+accordbiere[indextable]+'</td>'
-                +'<td>'+combiere[indextable]+'</td>');
-                tablecaveall.insertAdjacentHTML('beforeend', '<tr  class=\'nombiere'+i+'\'><td>'+element+'</td>'+'<td>'+typebiere[indextable]+'</td><td></td><td></td><td>'+paysbiere[indextable]+'</td><td>'+nbrbouteillebiere[indextable]+'</td><td>'+accordbiere[indextable]+'</td><td>'+combiere[indextable]+'</td>');
-                i++;
-                indextable++;
-            })
+        fonctionBeer.showBeer(caveBeerToShow);
     }
+
 
 //Ajout bière
 
